@@ -2614,8 +2614,6 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
         await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.", reply_markup=reply_markup)
 
-def main():
-    app = Application.builder().token(TOKEN).build()
 
     buy_business_conv = ConversationHandler(
         entry_points=[MessageHandler(filters.Regex("^🏢 Бизнесы$"), buy_business_start)],
@@ -2754,6 +2752,15 @@ def main():
         fallbacks=[CommandHandler("cancel", cancel_buy)]
     )
 
+
+    if __name__ == "__main__":
+        TOKEN = os.getenv("BOT_TOKEN")
+        if not TOKEN:
+            print("❌ BOT_TOKEN не установлен в переменных окружения!")
+            exit(1)
+    
+    app = Application.builder().token(TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.Regex("^💰 Профиль$"), profile))
     app.add_handler(MessageHandler(filters.Regex("^🎰 Казино$"), casino))
@@ -2793,11 +2800,6 @@ def main():
     app.add_handler(CommandHandler("givematter", give_matter))
     app.add_handler(CommandHandler("players", show_players))
     app.add_handler(CommandHandler("reset", reset_player))
-    if __name__ == "__main__":
-        TOKEN = os.getenv("BOT_TOKEN")
-        if not TOKEN:
-            print("❌ BOT_TOKEN не установлен в переменных окружения!")
-            exit(1)
 
     PORT = int(os.environ.get("PORT", 8000))
 
