@@ -2793,10 +2793,20 @@ def main():
     app.add_handler(CommandHandler("givematter", give_matter))
     app.add_handler(CommandHandler("players", show_players))
     app.add_handler(CommandHandler("reset", reset_player))
-    app.add_error_handler(error_handler)
+    if __name__ == "__main__":
+    TOKEN = os.getenv("BOT_TOKEN")
+    if not TOKEN:
+        print("❌ BOT_TOKEN не установлен в переменных окружения!")
+        exit(1)
 
-    print("Бот запущен...")
-    app.run_polling()
+    PORT = int(os.environ.get("PORT", 8000))
 
-if __name__ == "__main__":
-    main()
+    print(f"✅ Запуск бота через webhook на порту {PORT}...")
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        url_path=TOKEN,
+        webhook_url=f"https://my-telegram-bot5-cg6d.onrender.com/{TOKEN}",
+        allowed_updates=Update.ALL_UPDATE_TYPES,
+        drop_pending_updates=True
+    )
