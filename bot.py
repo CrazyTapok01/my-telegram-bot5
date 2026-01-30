@@ -2795,9 +2795,9 @@ def main():
     app.add_handler(CommandHandler("reset", reset_player))
     if __name__ == "__main__":
         TOKEN = os.getenv("BOT_TOKEN")
-    if not TOKEN:
-        print("❌ BOT_TOKEN не установлен в переменных окружения!")
-        exit(1)
+        if not TOKEN:
+            print("❌ BOT_TOKEN не установлен в переменных окружения!")
+            exit(1)
 
     PORT = int(os.environ.get("PORT", 8000))
 
